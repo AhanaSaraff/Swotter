@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist - SWOTTER</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <h1>Your Wishlist</h1>
+        <a href="index.html" class="btn">Back to Home</a>
+    </header>
+
+    <section id="wishlist">
+        <p>Your wishlist is currently empty.</p>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+            let wishlistSection = document.getElementById("wishlist");
+            
+            if (wishlist.length === 0) {
+                wishlistSection.innerHTML = "<p>Your wishlist is currently empty.</p>";
+            } else {
+                wishlistSection.innerHTML = wishlist.map(item => `
+                    <div class="wishlist-item">
+                        <h2>${item.title}</h2>
+                        <p>Price: ${item.price}</p>
+                    </div>
+                `).join('');
+            }
+        });
+    </script>
+</body>
+</html>

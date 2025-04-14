@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Book - SWOTTER</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styles for the Post Ad Page */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2em auto;
+            padding: 2em;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #205781;
+            text-align: center;
+            margin-bottom: 1.5em;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5em;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.7em;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        input[type="file"] {
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            background-color: white;
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            padding: 1em;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+            width: 100%;
+            /* Make sure it takes full width */
+            box-sizing: border-box;
+        }
+
+
+        .file-upload-wrapper:hover {
+            border-color: #007bff;
+        }
+
+
+        .file-upload-text {
+            margin-right: 1em;
+            color: #777;
+            font-size: 1em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+            /* Adjust as needed */
+        }
+
+        .file-upload-button {
+            background-color: #007bff;
+            color: white;
+            padding: 0.5em 1em;
+            border-radius: 5px;
+            font-size: 1em;
+            white-space: nowrap;
+        }
+
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+            margin-top: 1em;
+        }
+
+        .image-preview {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-preview .remove-image-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 0 5px 0 0;
+            padding: 0.2em 0.5em;
+            cursor: pointer;
+            font-size: 0.8em;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .image-preview:hover .remove-image-button {
+            opacity: 1;
+        }
+
+
+        button[type="submit"] {
+            background-color: #5cb85c;
+            color: white;
+            padding: 0.8em 1.5em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #4cae4c;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5em;
+            }
+
+            .file-upload-text {
+                max-width: 60%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Sell Your Book</h1>
+        <form id="postBookForm" enctype="multipart/form-data">
+            <label for="title">Book Title:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" required>
+
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+                <option value="" disabled selected>Select Category</option>
+                <option value="fiction">Fiction</option>
+                <option value="non-fiction">Non-Fiction</option>
+                <option value="comics">Comics & Graphic Novels</option>
+                <option value="textbooks">Textbooks</option>
+                <option value="mystery">Mystery & Thriller</option>
+                <option value="self-help">Self-Help</option>
+                <option value="fantasy">Fantasy</option>
+                <option value="science-fiction">Science Fiction</option>
+                <option value="romance">Romance</option>
+                <option value="biography">Biographies & Memoirs</option>
+                <option value="history">History</option>
+                <option value="poetry">Poetry</option>
+                <option value="business">Business & Economics</option>
+                <option value="health">Health & Wellness</option>
+                <option value="children">Children's Books</option>
+                <option value="young-adult">Young Adult</option>
+            </select>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea>
+
+            <label for="price">Price (₹):</label>
+            <input type="number" id="price" name="price" min="0" step="0.01" required>
+
+            <label for="condition">Condition:</label>
+            <select id="condition" name="condition" required>
+                <option value="" disabled selected>Select Condition</option>
+                <option value="new">New</option>
+                <option value="like-new">Like New</option>
+                <option value="very-good">Very Good</option>
+                <option value="good">Good</option>
+                <option value="acceptable">Acceptable</option>
+            </select>
+
+            <label for="images">Book Images:</label>
+            <div class="file-upload-wrapper" id="imageUploadWrapper">
+                <span class="file-upload-text">Choose Files</span>
+                <span class="file-upload-button">Browse</span>
+                <input type="file" id="images" name="images" accept="image/*" multiple>
+            </div>
+            <div id="imagePreview" class="image-preview-container">
+            </div>
+
+            <button type="submit">Post Ad</button>
+        </form>
+    </div>
+
+    <script>
+        const imageUpload = document.getElementById('images');
+        const imagePreview = document.getElementById('imagePreview');
+        const imageUploadWrapper = document.getElementById('imageUploadWrapper');
+        const fileUploadText = document.querySelector('.file-upload-text');
+
+        imageUpload.addEventListener('change', function () {
+            const files = this.files;
+            imagePreview.innerHTML = ''; // Clear previous previews
+
+            if (files && files.length > 0) {
+                fileUploadText.textContent = `${files.length} files selected`; // Update file count
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const preview = document.createElement('div');
+                        preview.classList.add('image-preview');
+                        preview.innerHTML = `
+                            <img src="${e.target.result}" alt="Book Preview">
+                            <button class="remove-image-button" type="button">&times;</button>
+                        `;
+                        imagePreview.appendChild(preview);
+
+                        const removeButton = preview.querySelector('.remove-image-button');
+                        removeButton.addEventListener('click', function () {
+                            preview.remove();
+                            // Remove the corresponding file from the FileList
+                            const newFiles = Array.from(imageUpload.files).filter(f => f !== file);
+                            const dataTransfer = new DataTransfer();
+                            newFiles.forEach(f => dataTransfer.items.add(f));
+                            imageUpload.files = dataTransfer.files;
+
+                            if (imageUpload.files.length === 0) {
+                                fileUploadText.textContent = 'Choose Files';
+                            } else {
+                                fileUploadText.textContent = `${imageUpload.files.length} files selected`;
+                            }
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                fileUploadText.textContent = 'Choose Files';
+            }
+        });
+
+        imageUploadWrapper.addEventListener('click', function () {
+            imageUpload.click();
+        });
+
+
+        document.getElementById('postBookForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Get form data
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+            const category = document.getElementById('category').value;
+            const description = document.getElementById('description').value;
+            const price = document.getElementById('price').value;
+            const condition = document.getElementById('condition').value;
+            const images = document.getElementById('images').files;
+
+            if (!title || !author || !category || !description || !price || !condition) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            if (images.length > 5) {
+                alert('You can upload a maximum of 5 images.');
+                return;
+            }
+
+            const imagePromises = Array.from(images).map(file => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            Promise.all(imagePromises)
+                .then(base64Images => {
+                    const formData = {
+                        title,
+                        author,
+                        category,
+                        description,
+                        price,
+                        condition,
+                        images: base64Images
+                    };
+
+                    // ✅ This is the new fetch call
+                    fetch('http://localhost:5000/api/books', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                            alert('Book posted successfully!');
+                            document.getElementById('postBookForm').reset();
+                            imagePreview.innerHTML = '';
+                            fileUploadText.textContent = 'Choose Files';
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('There was an error posting your book.');
+                        });
+
+                })
+                .catch(error => {
+                    console.error("Error converting images", error);
+                    alert('Failed to process images');
+                });
+        });
+
+    </script>
+</body>
+
+</html>

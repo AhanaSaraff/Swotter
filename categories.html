@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWOTTER - Buy & Sell Books</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* Styles for horizontal categories */
+        .categories-container {
+            display: flex;
+            /* This makes the items inside arrange in a row */
+            justify-content: center;
+            /* This centers the categories horizontally */
+            padding: 15px 10px;
+            /* Thoda left aur right padding bhi add kiya */
+            background-color: #f8f8f8;
+            /* A light background color */
+            border-bottom: 1px solid #eee;
+            /* A subtle line at the bottom */
+            flex-wrap: wrap;
+            /* Agar space kam ho toh items neeche wrap ho jaenge */
+        }
+
+        .category-link {
+            /*color: #333;
+             Dark text color */
+            padding: 15px 25px;
+            /* Padding ko bada kiya for bigger size */
+            text-decoration: none;
+            /* Removes underlines from links */
+            font-size: 18px;
+            /* Font size bhi bada kiya */
+            transition: background-color 0.3s ease;
+            /* Smooth hover effect */
+            border-radius: 8px;
+            /* Thode aur rounded corners for bigger size */
+            margin: 5px 10px;
+            /* Thoda upar-neeche margin bhi add kiya for spacing */
+            display: inline-block;
+            /* Important for margin to work correctly with wrap */
+
+            /* ... baaki styles ... */
+            font-family: 'Arial', sans-serif;
+            background-color: #ddd;
+            /* Light gray */
+            color: #333;
+            /* Default text color changed back from hover color */
+            border-bottom: none;
+            /* Default border-bottom removed */
+        }
+
+        .category-link:hover {
+            background-color: #007bff;
+            /* Blue background on hover */
+            color: white;
+            /* White text on hover */
+            border-bottom: none;
+            /* Hover par bhi border-bottom nahi */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Thodi badi shadow on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <span class="menu-icon" onclick="openDrawer()">&#9776;</span>
+        <h1>SWOTTER - Buy & Sell Books</h1>
+        <div class="icons">
+            <a href="wishlist.html"><i class="fas fa-heart"></i><span class="count" id="wishlist-count">0</span></a>
+            <a href="cart.html"><i class="fas fa-shopping-cart"></i><span class="count" id="cart-count">0</span></a>
+        </div>
+    </header>
+
+    <div class="categories-container">
+        <a href="fiction.html" class="category-link">Fiction</a>
+        <a href="non-fiction.html" class="category-link">Non-Fiction</a>
+        <a href="comics.html" class="category-link">Comics & Graphic Novels</a>
+        <a href="textbooks.html" class="category-link">Textbooks</a>
+        <a href="mystery.html" class="category-link">Mystery & Thriller</a>
+        <a href="self-help.html" class="category-link">Self-Help</a>
+        <a href="fantasy.html" class="category-link">Fantasy</a>
+        <a href="science-fiction.html" class="category-link">Science Fiction</a>
+        <a href="romance.html" class="category-link">Romance</a>
+        <a href="biography.html" class="category-link">Biographies & Memoirs</a>
+        <a href="history.html" class="category-link">History</a>
+        <a href="poetry.html" class="category-link">Poetry</a>
+        <a href="business.html" class="category-link">Business & Economics</a>
+        <a href="health.html" class="category-link">Health & Wellness</a>
+        <a href="children.html" class="category-link">Children's Books</a>
+        <a href="young-adult.html" class="category-link">Young Adult</a>
+    </div>
+
+    <script>
+        function openDrawer() {
+            document.getElementById("drawer").style.left = "0";
+        }
+        function closeDrawer() {
+            document.getElementById("drawer").style.left = "-250px";
+        }
+    </script>
+</body>
+
+</html>

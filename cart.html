@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - SWOTTER</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* ... (Your existing styles) ... */
+        .cart-item-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .ad {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 300px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-controls button {
+            padding: 5px 10px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        #total-amount {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 20px;
+            text-align: center;
+        }
+
+        #proceed-button {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        #proceed-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Your Cart</h1>
+        <a href="index.html" class="btn">Back to Home</a>
+    </header>
+
+    <section id="cart">
+        <p>Your cart is currently empty.</p>
+    </section>
+
+    <div id="total-amount"></div>
+    <button id="proceed-button">Proceed</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let cartSection = document.getElementById("cart");
+            let totalAmountSection = document.getElementById("total-amount");
+            let proceedButton = document.getElementById("proceed-button");
+
+            function displayCart() {
+                if (cart.length === 0) {
+                    cartSection.innerHTML = "<p>Your cart is currently empty.</p>";
+                    totalAmountSection.textContent = "";
+                    proceedButton.style.display = "none";
+                } else {
+                    const groupedCart = cart.reduce((acc, item) => {
+                        const existingItem = acc.find(i => i.title === item.title);
+                        if (existingItem) {
+                            existingItem.count++;
+                        } else {
+                            acc.push({ ...item, count: 1 });
+                        }
+                        return acc;
+                    }, []);
+
+                    cartSection.innerHTML = `<div class="cart-item-container">` + groupedCart.map((item, index) => `
+                        <div class="ad" data-title="${item.title}" data-price="${item.price}" data-img="${item.img}">
+                            <img src="${item.img}" alt="${item.title}">
+                            <h2>${item.title}</h2>
+                            <p>Price: $${item.price}</p>
+                            <div class="quantity-controls">
+                                <button class="btn decrement-btn" data-index="${index}">-</button>
+                                <p class="item-count">Quantity: ${item.count}</p>
+                                <button class="btn increment-btn" data-index="${index}">+</button>
+                            </div>
+                            <a href="book-gatsby.html" class="btn">Buy Now</a>
+                        </div>
+                    `).join('') + `</div>`;
+
+                    document.querySelectorAll('.increment-btn').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const index = parseInt(this.getAttribute('data-index'));
+                            const titleToIncrement = groupedCart[index].title;
+                            cart.push(cart.find(item=> item.title === titleToIncrement));
+                            localStorage.setItem('cart', JSON.stringify(cart));
+                            displayCart();
+                        });
+                    });
+
+                    document.querySelectorAll('.decrement-btn').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const index = parseInt(this.getAttribute('data-index'));
+                            const titleToDecrement = groupedCart[index].title;
+                            const itemIndexToRemove = cart.findIndex(item => item.title === titleToDecrement);
+                            if(itemIndexToRemove !== -1){
+                                cart.splice(itemIndexToRemove, 1);
+                                localStorage.setItem('cart', JSON.stringify(cart));
+                                displayCart();
+                            }
+                        });
+                    });
+
+                    calculateTotalAmount();
+                    proceedButton.style.display = "block";
+                }
+            }
+
+            function calculateTotalAmount() {
+                let total = cart.reduce((acc, item) => acc + item.price, 0);
+                totalAmountSection.textContent = `Total Amount: $${total.toFixed(2)}`;
+                return total.toFixed(2);
+            }
+
+            displayCart();
+
+            proceedButton.addEventListener('click', function () {
+                sessionStorage.setItem('cartData', JSON.stringify(cart));
+                sessionStorage.setItem('cartTotal', calculateTotalAmount());
+                window.location.href = "checkout.html";
+            });
+        });
+    </script>
+</body>
+</html>

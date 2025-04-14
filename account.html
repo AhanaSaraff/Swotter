@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - SWOTTER</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2em auto;
+            padding: 2em;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #205781;
+            text-align: center;
+            margin-bottom: 1.5em;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1em 2em;
+            margin-bottom: 1.5em;
+            padding-bottom: 1.5em;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-details label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .profile-details span {
+            color: #777;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1em;
+            justify-content: center;
+        }
+
+        .profile-actions button,
+        .profile-actions a {
+            padding: 0.8em 1.5em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            /* Blue button */
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-actions button:hover,
+        .profile-actions a:hover {
+            background-color: #0056b3;
+        }
+
+        .profile-actions .secondary {
+            background-color: #6c757d;
+            /* Grey button */
+        }
+
+        .profile-actions .secondary:hover {
+            background-color: #545b62;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>My Account</h1>
+
+        <div class="profile-details">
+            <label for="name">Name:</label>
+            <span id="name">John Doe</span>
+
+            <label for="email">Email:</label>
+            <span id="email">john.doe@example.com</span>
+
+            <label for="phone">Phone:</label>
+            <span id="phone">+91 9876543210</span>
+
+            <label for="address">Address:</label>
+            <span id="address">123 Main Street, Anytown, Maharashtra</span>
+
+            <label for="joined">Joined On:</label>
+            <span id="joined">January 15, 2025</span>
+        </div>
+
+        <div class="profile-actions">
+            <button class="primary">Edit Profile</button>
+            <a href="order-history.html" class="secondary">Order History</a>
+            <a href="wishlist.html" class="secondary">Wishlist</a>
+            <button class="secondary">Logout</button>
+        </div>
+    </div>
+</body>
+
+</html>

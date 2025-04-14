@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWOTTER - Buy & Sell</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            width: 60%;
+            background-color: #F6F8D5;
+            padding: 15px;
+            border-radius: 30px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 20px;
+            outline: none;
+            background-color: #FFCCCB;
+            color: #205781;
+            font-weight: bold;
+        }
+
+        .search-container i {
+            font-size: 26px;
+            color: #205781;
+            padding-left: 15px;
+        }
+
+        .icons {
+            display: flex;
+            gap: 20px;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .icons a {
+            font-size: 24px;
+            color: #205781;
+            position: relative;
+        }
+
+        .icons a .count {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background: red;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .drawer {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            background-color: #333;
+            padding-top: 60px;
+            transition: 0.3s;
+        }
+
+        .drawer a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 20px;
+            color: white;
+            display: block;
+        }
+
+        .drawer a:hover {
+            background-color: #575757;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #205781;
+            color: white;
+            border-radius: 25px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .search-container button:hover {
+            background-color: #1a4563;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .cart-item .quantity {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-item .quantity button {
+            padding: 5px 10px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="drawer" class="drawer">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeDrawer()">&times;</a>
+        <a href="index.html">Home</a>
+        <a href="categories.html">Categories</a>
+        <a href="wishlist.html">Wishlist</a>
+        <a href="cart.html">Cart</a>
+        <a href="account.html">My Account</a>
+        <a href="about.html">About Us</a>
+        <a href="help.html">Help</a>
+    </div>
+
+    <header>
+        <span class="menu-icon" onclick="openDrawer()">&#9776;</span>
+        <h1>SWOTTER</h1>
+        <div class="icons">
+            <a href="wishlist.html">
+                <img src="wishlist.png" alt="Wishlist Icon" style="width: 24px; height: 24px;">
+                <span class="count" id="wishlist-count">0</span>
+            </a>
+            <a href="cart.html">
+                <img src="cart.png" alt="Cart Icon" style="width: 24px; height: 24px;">
+                <span class="count" id="cart-count">0</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchBar" placeholder="Search for books..." onkeyup="searchBooks()">
+        <button onclick="searchBooks()">Search</button>
+    </div>
+
+    <section id="hero">
+        <h2>Buy & Sell Books, Anytime Anywhere!</h2>
+        <a href="post-ad.html" class="btn">Sell</a>
+    </section>
+
+    <section id="ads">
+        <div class="ad" data-title="Rare First Edition: The Great Gatsby" data-price="500"
+            data-img="https://via.placeholder.com/150?text=Gatsby+1st+Ed">
+            <img src="https://via.placeholder.com/150?text=Gatsby+1st+Ed" alt="The Great Gatsby First Edition">
+            <h2>Rare First Edition: The Great Gatsby</h2>
+            <p>Price: $500</p>
+            <button class="btn add-to-cart" data-title="Rare First Edition: The Great Gatsby" data-price="500"
+                data-img="https://via.placeholder.com/150?text=Gatsby+1st+Ed">Add to cart</button>
+            <a href="book-gatsby.html" class="btn">Buy Now</a>
+        </div>
+
+        <div class="ad" data-title="Science Fiction Anthology: Classic Tales" data-price="25"
+            data-img="https://via.placeholder.com/150?text=SciFi+Anthology">
+            <img src="https://via.placeholder.com/150?text=SciFi+Anthology" alt="Science Fiction Anthology">
+            <h2>Science Fiction Anthology: Classic Tales</h2>
+            <p>Price: $25</p>
+            <button class="btn add-to-cart" data-title="Science Fiction Anthology: Classic Tales" data-price="25"
+                data-img="https://via.placeholder.com/150?text=SciFi+Anthology">Add to cart</button>
+            <a href="book-gatsby.html" class="btn">Buy Now</a>
+        </div>
+
+        <div class="ad" data-title="Cookbook: World Cuisine Recipes" data-price="30"
+            data-img="https://via.placeholder.com/150?text=World+Cookbook">
+            <img src="https://via.placeholder.com/150?text=World+Cookbook" alt="World Cuisine Cookbook">
+            <h2>Cookbook: World Cuisine Recipes</h2>
+            <p>Price: $30</p>
+            <button class="btn add-to-cart" data-title="Cookbook: World Cuisine Recipes" data-price="30"
+                data-img="https://via.placeholder.com/150?text=World+Cookbook">Add to cart</button>
+            <a href="book-gatsby.html" class="btn">Buy Now</a>
+        </div>
+
+        <div class="ad" data-title="History Textbook: Ancient Civilizations" data-price="40"
+            data-img="https://via.placeholder.com/150?text=Ancient+History">
+            <img src="https://via.placeholder.com/150?text=Ancient+History" alt="Ancient Civilizations Textbook">
+            <h2>History Textbook: Ancient Civilizations</h2>
+            <p>Price: $40</p>
+            <button class="btn add-to-cart" data-title="History Textbook: Ancient Civilizations" data-price="40"
+                data-img="https://via.placeholder.com/150?text=Ancient+History">Add to cart</button>
+            <a href="book-gatsby.html" class="btn">Buy Now</a>
+        </div>
+
+        <div class="ad" data-title="Children's Book: The Adventures of Lily" data-price="15"
+            data-img="https://via.placeholder.com/150?text=Lily+Adventures">
+            <img src="https://via.placeholder.com/150?text=Lily+Adventures" alt="Children's Book Lily">
+            <h2>Children's Book: The Adventures of Lily</h2>
+            <p>Price: $15</p>
+            <button class="btn add-to-cart" data-title="Children's Book: The Adventures of Lily" data-price="15"
+                data-img="https://via.placeholder.com/150?text=Lily+Adventures">Add to cart</button>
+            <a href="book-gatsby.html" class="btn">Buy Now</a>
+        </div>
+
+        <div class="ad" data-title="Programming Book: Python for Beginners" data-price="20"
+            data-img="https://via.placeholder.com/150?text=Python+Beginners">
+            <img src="https://via.placeholder.com/150?text=Python+Beginners" alt="Python for Beginners Book">
+            <h2>Programming Book: Python for Beginners</h2>
+            <p>Price: $20</p>
+            <button class="btn add-to-cart" data-title="Programming Book: Python for Beginners" data-price="20"
+                data-img="https://via.placeholder.com/150?text=Python+Beginners">Add to cart</button>
+            <a href="book-gatsby.html" class="btn">Buy Now</a>
+        </div>
+
+        <div class="ad" data-title="Poetry Collection: Whispers of the Soul" data-price="18"
+            data-img="https://via.placeholder.com/150?text=Soul+Whispers">
+            <img src="https://via.placeholder.com/150?text=Soul+Whispers" alt="Poetry Collection">
+            <h2>Poetry Collection: Whispers of the Soul</h2>
+            <p>Price: $18</p>
+            <button class="btn add-to-cart" data-title="Poetry Collection: Whispers of the Soul" data-price="18"
+                data-img="https://via.placeholder.com/150?text=Soul+Whispers">Add to cart</button>
+            <a href="book-gatsby.html" class="btn">Buy Now</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 SWOTTER. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function openDrawer() {
+            document.getElementById("drawer").style.left = "0";
+        }
+        function closeDrawer() {
+            document.getElementById("drawer").style.left = "-250px";
+        }
+
+        function searchBooks() {
+            let input, filter, ads, ad, title, i, txtValue;
+            input = document.getElementById("searchBar");
+            filter = input.value.toUpperCase();
+            ads = document.getElementById("ads");
+            ad = ads.getElementsByClassName("ad");
+
+            for (i = 0; i < ad.length; i++) {
+                title = ad[i].getAttribute("data-title");
+                if (title) {
+                    txtValue = title.toUpperCase();
+                    if (txtValue.indexOf(filter) > -1) {
+                        ad[i].style.display = "";
+                    } else {
+                        ad[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            updateCartCount();
+
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function () {
+                    const title = this.getAttribute('data-title');
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    const img = this.getAttribute('data-img');
+                    cart.push({ title, price, img, quantity: 1 }); // Initialize quantity to 1
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartCount();
+                });
+            });
+
+            function updateCartCount() {
+                document.getElementById('cart-count').textContent = cart.length;
+            }
+
+            // Function to display cart items in the cart page
+            function displayCartItems() {
+                const cartItemsContainer = document.getElementById('cart-items');
+                if (!cartItemsContainer) return; // Exit if not on cart page
+
+                cartItemsContainer.innerHTML = ''; // Clear existing items
+                cart.forEach((item, index) => {
+                    const cartItemDiv = document.createElement('div');
+                    cartItemDiv.classList.add('cart-item');
+                    cartItemDiv.innerHTML = `
+                        <img src="${item.img}" alt="${item.title}">
+                        <div>
+                            <h3>${item.title}</h3>
+                            <p>Price: $${item.price}</p>
+                            <div class="quantity">
+                                <button onclick="changeQuantity(${index}, -1)">-</button>
+                                <span>${item.quantity}</span>
+                                <button onclick="changeQuantity(${index}, 1)">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeItem(${index})">Remove</button>
+                    `;
+                    cartItemsContainer.appendChild(cartItemDiv);
+                });
+            }
+
+            // Function to change item quantity
+            window.changeQuantity = function (index, change) {
+                cart[index].quantity += change;
+                if (cart[index].quantity < 1) cart[index].quantity = 1; // Prevent negative quantity
+                localStorage.setItem('cart', JSON.stringify(cart));
+                displayCartItems(); // Refresh cart display
+            };
+
+            // Function to remove item from cart
+            window.removeItem = function (index) {
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                displayCartItems(); // Refresh cart display
+                updateCartCount(); // Update cart count in header
+            };
+
+            // Call displayCartItems if on the cart page
+            if (window.location.pathname.includes('cart.html')) {
+                displayCartItems();
+            }
+        });
+    </script>
+    <div id="cart-items"></div>
+</body>
+
+</html>

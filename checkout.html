@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - SWOTTER</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #007bff;
+            color: white;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .left-section, .right-section {
+            padding: 20px;
+        }
+
+        .left-section {
+            flex: 2;
+            border-right: 1px solid #ddd;
+        }
+
+        .right-section {
+            flex: 1;
+            background-color: #f9f9f9;
+        }
+
+        .address-box, .payment-box, .delivery-box, .order-summary, .order-details {
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        .section-title {
+            color: #007bff;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .change-link {
+            color: #007bff;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .change-link:hover {
+            text-decoration: underline;
+        }
+
+        .place-order-button {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .place-order-button:hover {
+            background-color: #218838;
+        }
+
+        .order-details p {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .order-details strong {
+            font-size: 1.1em;
+        }
+
+        #cart-items-display img {
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Secure checkout</h1>
+    <div class="container">
+        <div class="left-section">
+            <div class="address-box">
+                <h2 class="section-title">Delivering to [User Name]</h2>
+                <p>[Address Line 1]</p>
+                <p>[Address Line 2]</p>
+                <p>[City], [State], [Zip Code]</p>
+                <p>[Country]</p>
+                <a href="#" class="change-link">Change</a>
+                <p><a href="#">Add delivery instructions</a></p>
+            </div>
+
+            <div class="payment-box">
+                <h2 class="section-title">Pay on delivery (Cash/Card)</h2>
+                <p>Use a gift card, voucher or promo code</p>
+                <a href="#" class="change-link">Change</a>
+            </div>
+
+            <div class="delivery-box">
+                <h2 class="section-title">Items in Your Cart:</h2>
+                <div id="cart-items-display">
+                </div>
+            </div>
+        </div>
+
+        <div class="right-section">
+            <div class="order-summary">
+                <button class="place-order-button">Place your order</button>
+                <p style="font-size: 0.8em; margin-top: 10px;">By placing your order, you agree to our <a href="#">privacy notice</a> and <a href="#">conditions of use</a>.</p>
+            </div>
+
+            <div class="order-details">
+                <p><span>Items:</span><span id="items-total">$0.00</span></p>
+                <p><span>Delivery:</span><span>$0.00</span></p>
+                <p><span>Cash/Pay on Delivery fee:</span><span>$10.00</span></p>
+                <p><strong><span>Order Total:</span><span id="order-total">$0.00</span></strong></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartData = JSON.parse(sessionStorage.getItem('cartData')) || [];
+            const cartTotal = sessionStorage.getItem('cartTotal') || "0.00";
+
+            const cartItemsDisplay = document.getElementById('cart-items-display');
+            let itemsHTML = '';
+
+            const groupedCart = cartData.reduce((acc, item) => {
+                const existingItem = acc.find(i => i.title === item.title);
+                if (existingItem) {
+                    existingItem.count++;
+                } else {
+                    acc.push({ ...item, count: 1 });
+                }
+                return acc;
+            }, []);
+
+            groupedCart.forEach(item => {
+                itemsHTML += `
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <img src="${item.img}" alt="${item.title}" style="width: 60px; height: 60px; margin-right: 10px;">
+                        <div>
+                            <p>${item.title}</p>
+                            <p>Price: $${item.price}</p>
+                            <p>Quantity: ${item.count}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            cartItemsDisplay.innerHTML = itemsHTML;
+
+            document.getElementById('items-total').textContent = `$${cartTotal}`;
+            document.getElementById('order-total').textContent = `$${(parseFloat(cartTotal) + 10).toFixed(2)}`;
+        });
+    </script>
+</body>
+</html>

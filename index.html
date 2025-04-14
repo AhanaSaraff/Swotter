@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWOTTER - Buy & Sell</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 0.9em;
+            /* Reduced font size by 1 unit */
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .drawer {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: -250px;
+            background-color: #111;
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: 0.5s;
+        }
+
+        .drawer a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .drawer a:hover {
+            color: #f1f1f1;
+        }
+
+        .drawer .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        header {
+            background-color: rgb(148, 208, 240);
+            color: black;
+            padding: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header .menu-icon {
+            font-size: 1.5em;
+            cursor: pointer;
+            margin-right: 10px;
+            color: black;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        header .icons a {
+            color: black;
+            text-decoration: none;
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        header .icons img {
+            width: 50px;
+            /* Increased icon size */
+            height: 50px;
+            /* Increased icon size */
+            margin-right: 5px;
+        }
+
+        header .icons .count {
+            background-color: black;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.7em;
+            vertical-align: middle;
+        }
+
+        .search-container {
+            padding: 1em;
+            background-color: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .search-container i {
+            color: #777;
+        }
+
+        .search-container input[type="text"] {
+            padding: 0.8em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex-grow: 1;
+            font-size: 1em;
+        }
+
+        .search-container button {
+            padding: 0.8em 1.5em;
+            background-color: rgb(70, 182, 242);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-container button:hover {
+            background-color: rgb(12, 87, 127);
+        }
+
+        #hero {
+            background-color: #e9ecef;
+            padding: 3em 2em;
+            text-align: center;
+        }
+
+        #hero h2 {
+            font-size: 2em;
+            margin-bottom: 1em;
+            color: #333;
+        }
+
+        #hero .btn {
+            display: inline-block;
+            padding: 1em 2em;
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+
+        #hero .btn:hover {
+            background-color: #033a70;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1em;
+            background-color: #333;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="drawer" class="drawer">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeDrawer()">&times;</a>
+        <a href="account.html">My Account</a>
+        <a href="categories.html">Categories</a>
+        <a href="wishlist.html">Wishlist</a>
+        <a href="cart.html">Cart</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Help</a>
+    </div>
+
+    <header>
+        <span class="menu-icon" onclick="openDrawer()">&#9776;</span>
+        <h1>SWOTTER</h1>
+        <div class="icons">
+            <a href="wishlist.html">
+                <img src="wishlist.png" alt="Wishlist Icon" style="width: 28px; height: 28px;">
+                <span class="count" id="wishlist-count">0</span>
+            </a>
+            <a href="cart.html">
+                <img src="cart.png" alt="Cart Icon" style="width: 28px; height: 28px;">
+                <span class="count" id="cart-count">0</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchBar" placeholder="Search for books..." onkeyup="searchBooks()">
+        <button onclick="searchBooks()">Search</button>
+    </div>
+
+    <section id="hero">
+        <h2>Buy & Sell Books, Anytime Anywhere!</h2>
+        <a href="post.html" class="btn">Sell</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 SWOTTER. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function openDrawer() {
+            document.getElementById("drawer").style.left = "0";
+        }
+        function closeDrawer() {
+            document.getElementById("drawer").style.left = "-250px";
+        }
+
+        function searchBooks() {
+            let input, filter, ads, ad, title, i, txtValue;
+            input = document.getElementById("searchBar");
+            filter = input.value.toUpperCase();
+            ads = document.getElementById("ads"); // Make sure you have an element with id "ads" to search within
+            ad = ads ? ads.getElementsByClassName("ad") : []; // Check if "ads" exists
+
+            for (i = 0; i < ad.length; i++) {
+                title = ad[i].getAttribute("data-title");
+                if (title) {
+                    txtValue = title.toUpperCase();
+                    if (txtValue.indexOf(filter) > -1) {
+                        ad[i].style.display = "";
+                    } else {
+                        ad[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            updateCartCount();
+
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function () {
+                    const title = this.getAttribute('data-title');
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    const img = this.getAttribute('data-img');
+                    cart.push({ title, price, img });
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartCount();
+                });
+            });
+
+            function updateCartCount() {
+                const cartCountElement = document.getElementById('cart-count');
+                if (cartCountElement) {
+                    cartCountElement.textContent = cart.length;
+                }
+            }
+
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            updateWishlistCount();
+
+            document.querySelectorAll('.add-to-wishlist').forEach(button => {
+                button.addEventListener('click', function () {
+                    const title = this.getAttribute('data-title');
+                    wishlist.push(title); // Or the book object, depending on your needs
+                    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                    updateWishlistCount();
+                });
+            });
+
+            function updateWishlistCount() {
+                const wishlistCountElement = document.getElementById('wishlist-count');
+                if (wishlistCountElement) {
+                    wishlistCountElement.textContent = wishlist.length;
+                }
+            }
+        });
+
+        function deleteBook(bookId) {
+            if (confirm("Are you sure you want to delete this book?")) {
+                fetch(`/api/books/${bookId}`, {
+                    method: 'DELETE'
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        alert(data.message || "Book deleted");
+                        location.reload(); // Refresh the page
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("Failed to delete book.");
+                    });
+            }
+        }
+
+    </script>
+</body>
+
+</html>
