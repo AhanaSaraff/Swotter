@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import sqlite3
+import base64
+
 
 app = Flask(__name__)
 CORS(app)
@@ -36,24 +38,31 @@ init_db()
 # Endpoint to receive book data
 @app.route('/api/books', methods=['POST'])
 def add_book():
-    data = request.json
     try:
+        title = request.form['title']
+        author = request.form['author']
+        category = request.form['category']
+        description = request.form['description']
+        price = float(request.form['price'])
+        condition = request.form['condition']
+        images = request.files.getlist('images')
+
         conn = sqlite3.connect('books.db')
         cursor = conn.cursor()
 
         cursor.execute('''
             INSERT INTO books (title, author, category, description, price, condition)
             VALUES (?, ?, ?, ?, ?, ?)
-        ''', (data['title'], data['author'], data['category'],
-              data['description'], float(data['price']), data['condition']))
+        ''', (title, author, category, description, price, condition))
 
         book_id = cursor.lastrowid
 
-        for img_base64 in data.get('images', []):
+        for image in images:
+            blob_data = image.read()
             cursor.execute('''
                 INSERT INTO book_images (book_id, image_base64)
                 VALUES (?, ?)
-            ''', (book_id, img_base64))
+            ''', (book_id, blob_data))
 
         conn.commit()
         conn.close()
@@ -65,54 +74,41 @@ def add_book():
         return jsonify({"error": "Something went wrong"}), 500
 
 # Display books on home page
-@app.route('/')
-def home():
+@app.route('/api/books')
+def get_books():
     conn = sqlite3.connect('books.db')
     cursor = conn.cursor()
-    cursor.execute('''
-        SELECT b.id, b.title, b.author, b.category, b.description, b.price, b.condition,
-               (SELECT image_base64 FROM book_images WHERE book_id = b.id LIMIT 1)
-        FROM books b
-    ''')
-    books = cursor.fetchall()
-    conn.close()
 
-    books_list = []
-    for book in books:
-        print("Fetched Book:", book)
-        books_list.append({
-            'id': book[0],
-            'title': book[1],
-            'author': book[2],
-            'category': book[3],
-            'description': book[4],
-            'price': book[5],
-            'condition': book[6],
-            'image': book[7]  # base64 image string
+    # Get book info with ONE image per book (you can customize this later)
+    cursor.execute('''
+        SELECT b.id, b.title, b.price, bi.image_base64
+        FROM books b
+        LEFT JOIN book_images bi ON b.id = bi.book_id
+        GROUP BY b.id
+    ''')
+    
+    rows = cursor.fetchall()
+    books = []
+
+    for row in rows:
+        book_id, title, price, image_blob = row
+
+        if image_blob:
+            image_base64 = base64.b64encode(image_blob).decode('utf-8')
+            image_url = f"data:image/jpeg;base64,{image_base64}"
+        else:
+            image_url = None
+
+        books.append({
+            'id': book_id,
+            'title': title,
+            'price': price,
+            'image': image_url
         })
 
-    return render_template('index.html', books=books_list)
-
-@app.route('/api/books/<int:book_id>', methods=['DELETE'])
-def delete_book(book_id):
-    try:
-        conn = sqlite3.connect('books.db')
-        cursor = conn.cursor()
-        
-        # Delete from book_images first (foreign key)
-        cursor.execute('DELETE FROM book_images WHERE book_id = ?', (book_id,))
-        # Then delete the book
-        cursor.execute('DELETE FROM books WHERE id = ?', (book_id,))
-        
-        conn.commit()
-        conn.close()
-        
-        return jsonify({"message": "Book deleted successfully."}), 200
-
-    except Exception as e:
-        print("Delete Error:", e)
-        return jsonify({"error": "Failed to delete book."}), 500
+    conn.close()
+    return jsonify(books)
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True)

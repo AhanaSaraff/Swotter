@@ -170,6 +170,51 @@
             bottom: 0;
             width: 100%;
         }
+
+        .books-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5em;
+            margin-top: 2em;
+            justify-content: center;
+        }
+
+        .book-card {
+            width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .book-card:hover {
+            transform: scale(1.03);
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .book-card .book-details {
+            padding: 1em;
+        }
+
+        .book-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 0.5em;
+        }
+
+        .book-price {
+            color: #28a745;
+            font-size: 1em;
+        }
     </style>
 </head>
 
@@ -209,6 +254,10 @@
         <h2>Buy & Sell Books, Anytime Anywhere!</h2>
         <a href="post.html" class="btn">Sell</a>
     </section>
+
+    <h2 style="text-align:center; margin-top: 2em;">Available Books</h2>
+    <div id="booksContainer" class="books-container"></div>
+
 
     <footer>
         <p>&copy; 2025 SWOTTER. All Rights Reserved.</p>
@@ -300,6 +349,42 @@
                     });
             }
         }
+
+        // Fetch books from server and display them
+        function loadBooks() {
+            fetch('http://localhost:5000/api/books')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('booksContainer');
+                    container.innerHTML = '';
+
+                    data.forEach(book => {
+                        const card = document.createElement('div');
+                        card.className = 'book-card';
+
+                        const image = book.image
+                            ? `<img src="${book.image}" alt="${book.title}">`
+                            : `<img src="https://via.placeholder.com/200x200.png?text=No+Image" alt="No Image">`;
+
+                        card.innerHTML = `
+                    ${image}
+                    <div class="book-details">
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-price">₹${book.price}</div>
+                    </div>
+                `;
+
+                        container.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error('Failed to load books:', error);
+                });
+        }
+
+        // Load books when the page loads
+        document.addEventListener('DOMContentLoaded', loadBooks);
+
 
     </script>
 </body>

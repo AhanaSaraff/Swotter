@@ -295,73 +295,32 @@
         document.getElementById('postBookForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
-            // Get form data
-            const title = document.getElementById('title').value;
-            const author = document.getElementById('author').value;
-            const category = document.getElementById('category').value;
-            const description = document.getElementById('description').value;
-            const price = document.getElementById('price').value;
-            const condition = document.getElementById('condition').value;
-            const images = document.getElementById('images').files;
+            const formData = new FormData(this); // Auto collects all form inputs
 
-            if (!title || !author || !category || !description || !price || !condition) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-
-            if (images.length > 5) {
+            if (formData.getAll('images').length > 5) {
                 alert('You can upload a maximum of 5 images.');
                 return;
             }
 
-            const imagePromises = Array.from(images).map(file => {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
-            });
-
-            Promise.all(imagePromises)
-                .then(base64Images => {
-                    const formData = {
-                        title,
-                        author,
-                        category,
-                        description,
-                        price,
-                        condition,
-                        images: base64Images
-                    };
-
-                    // ✅ This is the new fetch call
-                    fetch('http://localhost:5000/api/books', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(formData)
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Success:', data);
-                            alert('Book posted successfully!');
-                            document.getElementById('postBookForm').reset();
-                            imagePreview.innerHTML = '';
-                            fileUploadText.textContent = 'Choose Files';
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('There was an error posting your book.');
-                        });
+            fetch('http://localhost:5000/api/books', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Book posted successfully!');
+                    document.getElementById('postBookForm').reset();
+                    document.getElementById('imagePreview').innerHTML = '';
+                    fileUploadText.textContent = 'Choose Files';
+                    loadBooks();
 
                 })
                 .catch(error => {
-                    console.error("Error converting images", error);
-                    alert('Failed to process images');
+                    console.error('Error:', error);
+                    alert('There was an error posting your book.');
                 });
         });
+
 
     </script>
 </body>
