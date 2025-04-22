@@ -82,10 +82,8 @@
         }
 
         header .icons img {
-            width: 50px;
-            /* Increased icon size */
-            height: 50px;
-            /* Increased icon size */
+            width: 28px;
+            height: 28px;
             margin-right: 5px;
         }
 
@@ -117,6 +115,7 @@
             border-radius: 5px;
             flex-grow: 1;
             font-size: 1em;
+            color: gray;
         }
 
         .search-container button {
@@ -175,12 +174,14 @@
             display: flex;
             flex-wrap: wrap;
             gap: 1.5em;
-            margin-top: 2em;
+            margin: 2em;
             justify-content: center;
+
         }
 
         .book-card {
-            width: 200px;
+            width: 250px;
+            /* Slightly wider to accommodate buttons */
             border: 1px solid #ddd;
             border-radius: 8px;
             background-color: #fff;
@@ -188,6 +189,12 @@
             overflow: hidden;
             text-align: center;
             transition: transform 0.2s ease;
+            margin-bottom: 2em;
+            /* Added margin to separate cards */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            /* Distribute space for content and buttons */
         }
 
         .book-card:hover {
@@ -214,6 +221,57 @@
         .book-price {
             color: #28a745;
             font-size: 1em;
+            margin-bottom: 0.5em;
+            /* Added margin for spacing */
+        }
+
+        .book-card .actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5em;
+            border-top: 1px solid #eee;
+        }
+
+        .book-card .actions button {
+            padding: 0.7em 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+
+        .book-card .buy-btn {
+            background-color: transparent;
+            color: black;
+        }
+
+        .book-card .buy-btn:hover {
+            background-color: #007bff;
+        }
+
+        .book-card .add-cart-btn {
+            background-color: transparent;
+            color: black;
+        }
+
+        .book-card .add-cart-btn:hover {
+            background-color: #28a745;
+        }
+
+        .book-card .wishlist-btn {
+            background-color: transparent;
+            /* Make the background transparent */
+            color: inherit;
+            /* Inherit the text color from the parent if needed */
+            border: none;
+            /* Optionally remove the border as well */
+            padding: 0;
+            /* Adjust padding if needed */
+        }
+
+        .book-card .wishlist-btn:hover {
+            background-color: transparent;
         }
     </style>
 </head>
@@ -221,6 +279,7 @@
 <body>
     <div id="drawer" class="drawer">
         <a href="javascript:void(0)" class="closebtn" onclick="closeDrawer()">&times;</a>
+        <a href="index.html">Home</a>
         <a href="account.html">My Account</a>
         <a href="categories.html">Categories</a>
         <a href="wishlist.html">Wishlist</a>
@@ -272,20 +331,19 @@
         }
 
         function searchBooks() {
-            let input, filter, ads, ad, title, i, txtValue;
+            let input, filter, bookCards, bookCard, title, i, txtValue;
             input = document.getElementById("searchBar");
             filter = input.value.toUpperCase();
-            ads = document.getElementById("ads"); // Make sure you have an element with id "ads" to search within
-            ad = ads ? ads.getElementsByClassName("ad") : []; // Check if "ads" exists
+            bookCards = document.getElementById("booksContainer").getElementsByClassName("book-card");
 
-            for (i = 0; i < ad.length; i++) {
-                title = ad[i].getAttribute("data-title");
-                if (title) {
-                    txtValue = title.toUpperCase();
+            for (i = 0; i < bookCards.length; i++) {
+                titleElement = bookCards[i].querySelector(".book-title");
+                if (titleElement) {
+                    txtValue = titleElement.textContent.toUpperCase();
                     if (txtValue.indexOf(filter) > -1) {
-                        ad[i].style.display = "";
+                        bookCards[i].style.display = "";
                     } else {
-                        ad[i].style.display = "none";
+                        bookCards[i].style.display = "none";
                     }
                 }
             }
@@ -295,17 +353,6 @@
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             updateCartCount();
 
-            document.querySelectorAll('.add-to-cart').forEach(button => {
-                button.addEventListener('click', function () {
-                    const title = this.getAttribute('data-title');
-                    const price = parseFloat(this.getAttribute('data-price'));
-                    const img = this.getAttribute('data-img');
-                    cart.push({ title, price, img });
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    updateCartCount();
-                });
-            });
-
             function updateCartCount() {
                 const cartCountElement = document.getElementById('cart-count');
                 if (cartCountElement) {
@@ -313,17 +360,14 @@
                 }
             }
 
+            function addToCart(title, price, img) {
+                cart.push({ title, price, img });
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+            }
+
             let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
             updateWishlistCount();
-
-            document.querySelectorAll('.add-to-wishlist').forEach(button => {
-                button.addEventListener('click', function () {
-                    const title = this.getAttribute('data-title');
-                    wishlist.push(title); // Or the book object, depending on your needs
-                    localStorage.setItem('wishlist', JSON.stringify(wishlist));
-                    updateWishlistCount();
-                });
-            });
 
             function updateWishlistCount() {
                 const wishlistCountElement = document.getElementById('wishlist-count');
@@ -331,6 +375,109 @@
                     wishlistCountElement.textContent = wishlist.length;
                 }
             }
+
+            function addToWishlist(title, price, img) {
+                wishlist.push({ title: title, price: price, img: img });
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                updateWishlistCount();
+            }
+
+            // Fetch books from server and display them
+            // Fetch books from server and display them
+            function loadBooks() {
+                fetch('http://localhost:5000/api/books')
+                    .then(response => response.json())
+                    .then(data => {
+                        const container = document.getElementById('booksContainer');
+                        container.innerHTML = '';
+
+                        data.forEach(book => {
+                            const card = document.createElement('div');
+                            card.className = 'book-card';
+                            const isWishlisted = wishlist.some(item => item.title === book.title);
+                            const initialWishlistIcon = isWishlisted ? 'heart.png' : 'wishlist.png';
+
+                            const image = book.image
+                                ? `<img src="${book.image}" alt="${book.title}">`
+                                : `<img src="https://via.placeholder.com/250x200.png?text=No+Image" alt="No Image">`;
+
+                            card.innerHTML = `
+                            ${image}
+                            <div class="book-details">
+                                <div class="book-title">${book.title}</div>
+                                <div class="book-price">₹${book.price}</div>
+                            </div>
+                            <div class="actions">
+                                <button class="buy-btn" onclick="window.location.href='checkout.html?title=${encodeURIComponent(book.title)}&price=${book.price}&img=${encodeURIComponent(book.image || 'https://via.placeholder.com/150x100.png?text=No+Image')}'">Buy</button>
+                                <button class="add-cart-btn" data-title="${book.title}" data-price="${book.price}" data-img="${book.image || 'https://via.placeholder.com/100x100.png?text=No+Image'}">Add to Cart</button>
+                                <button class="wishlist-btn" data-title="${book.title}" data-price="${book.price}" data-img="${book.image || 'https://via.placeholder.com/100x100.png?text=No+Image'}">
+                                    <img src="${initialWishlistIcon}" alt="Wishlist Icon" style="width: 24px; height: 24px; vertical-align: middle;">
+                                </button>
+                            </div>
+                        `;
+
+                            container.appendChild(card);
+                        });
+
+                        // Attach event listeners to the "Add to Cart" buttons after they are loaded
+                        document.querySelectorAll('.add-cart-btn').forEach(button => {
+                            button.addEventListener('click', function () {
+                                const title = this.getAttribute('data-title');
+                                const price = parseFloat(this.getAttribute('data-price'));
+                                const img = this.getAttribute('data-img');
+                                addToCart(title, price, img);
+                            });
+                        });
+
+                        // Attach event listeners to the "Wishlist" buttons after they are loaded
+                        document.querySelectorAll('.wishlist-btn').forEach(button => {
+                            const imgElement = button.querySelector('img');
+                            const initialSrc = imgElement.src;
+                            const hoverSrc = 'wishlist_hover.png';
+                            const likedSrc = 'heart.png';
+                            const title = button.getAttribute('data-title');
+                            const price = parseFloat(button.getAttribute('data-price'));
+                            const img = button.getAttribute('data-img');
+                            let isCurrentlyWishlisted = wishlist.some(item => item.title === title);
+
+                            button.addEventListener('mouseover', function () {
+                                if (!isCurrentlyWishlisted) {
+                                    imgElement.src = hoverSrc;
+                                }
+                            });
+
+                            button.addEventListener('mouseout', function () {
+                                if (!isCurrentlyWishlisted) {
+                                    imgElement.src = initialSrc;
+                                }
+                            });
+
+                            button.addEventListener('click', function () {
+                                if (isCurrentlyWishlisted) {
+                                    // Remove from wishlist
+                                    const indexToRemove = wishlist.findIndex(item => item.title === title);
+                                    if (indexToRemove > -1) {
+                                        wishlist.splice(indexToRemove, 1);
+                                        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                                        updateWishlistCount();
+                                        imgElement.src = 'wishlist.png';
+                                        isCurrentlyWishlisted = false;
+                                    }
+                                } else {
+                                    // Add to wishlist
+                                    addToWishlist(title, price, img);
+                                    imgElement.src = likedSrc;
+                                    isCurrentlyWishlisted = true;
+                                }
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Failed to load books:', error);
+                    });
+            }
+            // Load books when the page loads
+            loadBooks();
         });
 
         function deleteBook(bookId) {
@@ -349,43 +496,6 @@
                     });
             }
         }
-
-        // Fetch books from server and display them
-        function loadBooks() {
-            fetch('http://localhost:5000/api/books')
-                .then(response => response.json())
-                .then(data => {
-                    const container = document.getElementById('booksContainer');
-                    container.innerHTML = '';
-
-                    data.forEach(book => {
-                        const card = document.createElement('div');
-                        card.className = 'book-card';
-
-                        const image = book.image
-                            ? `<img src="${book.image}" alt="${book.title}">`
-                            : `<img src="https://via.placeholder.com/200x200.png?text=No+Image" alt="No Image">`;
-
-                        card.innerHTML = `
-                    ${image}
-                    <div class="book-details">
-                        <div class="book-title">${book.title}</div>
-                        <div class="book-price">₹${book.price}</div>
-                    </div>
-                `;
-
-                        container.appendChild(card);
-                    });
-                })
-                .catch(error => {
-                    console.error('Failed to load books:', error);
-                });
-        }
-
-        // Load books when the page loads
-        document.addEventListener('DOMContentLoaded', loadBooks);
-
-
     </script>
 </body>
 

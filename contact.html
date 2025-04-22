@@ -122,6 +122,27 @@
 
         <button type="submit">Send Message</button>
     </form>
+    <script>
+        document.querySelector('form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this);
+
+            fetch('http://localhost:5000/api/contact', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message || 'Message sent successfully!');
+                    this.reset(); // Clear the form
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error sending your message.');
+                });
+        });
+    </script>
 </body>
 
 </html>

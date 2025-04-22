@@ -46,12 +46,38 @@
 
         .profile-details span {
             color: #777;
+            font-size: 1em;
+            padding: 0.5em 0;
+        }
+
+        .edit-form {
+            display: none;
+            grid-template-columns: auto 1fr;
+            gap: 1em 2em;
+            margin-bottom: 1.5em;
+            padding-bottom: 1.5em;
+            border-bottom: 1px solid #eee;
+        }
+
+        .edit-form label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .edit-form input[type="text"] {
+            padding: 0.5em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .profile-actions {
             display: flex;
             gap: 1em;
             justify-content: center;
+            align-items: center;
         }
 
         .profile-actions button,
@@ -64,7 +90,6 @@
             text-decoration: none;
             color: white;
             background-color: #007bff;
-            /* Blue button */
             transition: background-color 0.3s ease;
         }
 
@@ -73,13 +98,25 @@
             background-color: #0056b3;
         }
 
-        .profile-actions .secondary {
-            background-color: #6c757d;
-            /* Grey button */
+        .edit-buttons {
+            display: none;
+            gap: 0.5em;
         }
 
-        .profile-actions .secondary:hover {
-            background-color: #545b62;
+        .editing .profile-details {
+            display: none;
+        }
+
+        .editing .edit-form {
+            display: grid;
+        }
+
+        .editing .profile-actions>*:not(.edit-buttons) {
+            display: none;
+        }
+
+        .editing .edit-buttons {
+            display: flex;
         }
     </style>
 </head>
@@ -90,28 +127,131 @@
 
         <div class="profile-details">
             <label for="name">Name:</label>
-            <span id="name">John Doe</span>
+            <span id="name-span">John Doe</span>
 
             <label for="email">Email:</label>
-            <span id="email">john.doe@example.com</span>
+            <span id="email-span">john.doe@example.com</span>
 
             <label for="phone">Phone:</label>
-            <span id="phone">+91 9876543210</span>
+            <span id="phone-span">+91 9876543210</span>
 
             <label for="address">Address:</label>
-            <span id="address">123 Main Street, Anytown, Maharashtra</span>
+            <span id="address-span">123 Main Street, Anytown, Maharashtra</span>
 
             <label for="joined">Joined On:</label>
-            <span id="joined">January 15, 2025</span>
+            <span id="joined-span">January 15, 2025</span>
         </div>
 
+        <form id="edit-profile-form" class="edit-form">
+            <label for="edit-name">Name:</label>
+            <input type="text" id="edit-name" value="John Doe">
+
+            <label for="edit-email">Email:</label>
+            <input type="text" id="edit-email" value="john.doe@example.com">
+
+            <label for="edit-phone">Phone:</label>
+            <input type="text" id="edit-phone" value="+91 9876543210">
+
+            <label for="edit-address">Address:</label>
+            <input type="text" id="edit-address" value="123 Main Street, Anytown, Maharashtra">
+
+            <label for="edit-joined">Joined On:</label>
+            <input type="text" id="edit-joined" value="January 15, 2025" readonly>
+        </form>
+
         <div class="profile-actions">
-            <button class="primary">Edit Profile</button>
-            <a href="order-history.html" class="secondary">Order History</a>
+            <button class="primary" id="edit-button" onclick="toggleEdit()">Edit Profile</button>
             <a href="wishlist.html" class="secondary">Wishlist</a>
-            <button class="secondary">Logout</button>
+            <a href="cart.html" class="secondary">Cart</a>
+            <button class="secondary" onclick="logout()">Logout</button>
+            <div class="edit-buttons">
+                <button type="button" onclick="saveEdit()">Save</button>
+                <button type="button" onclick="cancelEdit()">Cancel</button>
+            </div>
         </div>
     </div>
+
+    <script>
+        const profileDetails = document.querySelector('.profile-details');
+        const editForm = document.getElementById('edit-profile-form');
+        const editButton = document.getElementById('edit-button');
+        const editButtonsDiv = document.querySelector('.edit-buttons');
+
+        const nameSpan = document.getElementById('name-span');
+        const emailSpan = document.getElementById('email-span');
+        const phoneSpan = document.getElementById('phone-span');
+        const addressSpan = document.getElementById('address-span');
+        const joinedSpan = document.getElementById('joined-span');
+
+        const editNameInput = document.getElementById('edit-name');
+        const editEmailInput = document.getElementById('edit-email');
+        const editPhoneInput = document.getElementById('edit-phone');
+        const editAddressInput = document.getElementById('edit-address');
+        const editJoinedInput = document.getElementById('edit-joined');
+
+        function toggleEdit() {
+            document.body.classList.toggle('editing');
+            if (document.body.classList.contains('editing')) {
+                editButton.textContent = 'Cancel';
+                editButton.onclick = cancelEdit;
+                editButtonsDiv.style.display = 'flex';
+            } else {
+                editButton.textContent = 'Edit Profile';
+                editButton.onclick = toggleEdit;
+                editButtonsDiv.style.display = 'none';
+            }
+        }
+
+        function cancelEdit() {
+            document.body.classList.remove('editing');
+            editButton.textContent = 'Edit Profile';
+            editButton.onclick = toggleEdit;
+            editButtonsDiv.style.display = 'none';
+        }
+
+        function saveEdit() {
+            nameSpan.textContent = editNameInput.value;
+            emailSpan.textContent = editEmailInput.value;
+            phoneSpan.textContent = editPhoneInput.value;
+            addressSpan.textContent = editAddressInput.value;
+
+            document.body.classList.remove('editing');
+            editButton.textContent = 'Edit Profile';
+            editButton.onclick = toggleEdit;
+            editButtonsDiv.style.display = 'none';
+
+            alert("Profile details updated!"); // In a real app, you'd save to a server/local storage
+        }
+
+        function logout() {
+            window.location.href = "login.html"; // Redirect to the login page
+            alert("Logged out."); // You might want to clear session/local storage here in a real app
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const userData = { // Example user data
+                name: "John Doe",
+                email: "john.doe@example.com",
+                phone: "+91 9876543210",
+                address: "123 Main Street, Anytown, Maharashtra",
+                joined: "January 15, 2025"
+            };
+
+            nameSpan.textContent = userData.name;
+            emailSpan.textContent = userData.email;
+            phoneSpan.textContent = userData.phone;
+            addressSpan.textContent = userData.address;
+            joinedSpan.textContent = userData.joined;
+
+            editNameInput.value = userData.name;
+            editEmailInput.value = userData.email;
+            editPhoneInput.value = userData.phone;
+            editAddressInput.value = userData.address;
+            editJoinedInput.value = userData.joined;
+
+            editButtonsDiv.style.display = 'none'; // Initially hide save/cancel buttons
+        });
+    </script>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,6 +60,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <h1>Your Cart</h1>
@@ -99,13 +101,13 @@
                         <div class="ad" data-title="${item.title}" data-price="${item.price}" data-img="${item.img}">
                             <img src="${item.img}" alt="${item.title}">
                             <h2>${item.title}</h2>
-                            <p>Price: $${item.price}</p>
+                            <p>Price: ₹${item.price}</p>
                             <div class="quantity-controls">
                                 <button class="btn decrement-btn" data-index="${index}">-</button>
                                 <p class="item-count">Quantity: ${item.count}</p>
                                 <button class="btn increment-btn" data-index="${index}">+</button>
                             </div>
-                            <a href="book-gatsby.html" class="btn">Buy Now</a>
+                            <a href="#" class="btn buy-now-btn" data-item='${JSON.stringify(item)}'>Buy Now</a>
                         </div>
                     `).join('') + `</div>`;
 
@@ -113,7 +115,7 @@
                         button.addEventListener('click', function () {
                             const index = parseInt(this.getAttribute('data-index'));
                             const titleToIncrement = groupedCart[index].title;
-                            cart.push(cart.find(item=> item.title === titleToIncrement));
+                            cart.push(cart.find(item => item.title === titleToIncrement));
                             localStorage.setItem('cart', JSON.stringify(cart));
                             displayCart();
                         });
@@ -124,11 +126,20 @@
                             const index = parseInt(this.getAttribute('data-index'));
                             const titleToDecrement = groupedCart[index].title;
                             const itemIndexToRemove = cart.findIndex(item => item.title === titleToDecrement);
-                            if(itemIndexToRemove !== -1){
+                            if (itemIndexToRemove !== -1) {
                                 cart.splice(itemIndexToRemove, 1);
                                 localStorage.setItem('cart', JSON.stringify(cart));
                                 displayCart();
                             }
+                        });
+                    });
+
+                    document.querySelectorAll('.buy-now-btn').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const itemData = JSON.parse(this.getAttribute('data-item'));
+                            sessionStorage.setItem('cartData', JSON.stringify([itemData]));
+                            sessionStorage.setItem('cartTotal', itemData.price);
+                            window.location.href = "checkout.html";
                         });
                     });
 
@@ -139,7 +150,7 @@
 
             function calculateTotalAmount() {
                 let total = cart.reduce((acc, item) => acc + item.price, 0);
-                totalAmountSection.textContent = `Total Amount: $${total.toFixed(2)}`;
+                totalAmountSection.textContent = `Total Amount: ₹${total.toFixed(2)}`;
                 return total.toFixed(2);
             }
 
@@ -153,4 +164,5 @@
         });
     </script>
 </body>
+
 </html>

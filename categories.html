@@ -11,56 +11,130 @@
         /* Styles for horizontal categories */
         .categories-container {
             display: flex;
-            /* This makes the items inside arrange in a row */
             justify-content: center;
-            /* This centers the categories horizontally */
             padding: 15px 10px;
-            /* Thoda left aur right padding bhi add kiya */
             background-color: #f8f8f8;
-            /* A light background color */
             border-bottom: 1px solid #eee;
-            /* A subtle line at the bottom */
             flex-wrap: wrap;
-            /* Agar space kam ho toh items neeche wrap ho jaenge */
         }
 
         .category-link {
-            /*color: #333;
-             Dark text color */
             padding: 15px 25px;
-            /* Padding ko bada kiya for bigger size */
             text-decoration: none;
-            /* Removes underlines from links */
             font-size: 18px;
-            /* Font size bhi bada kiya */
-            transition: background-color 0.3s ease;
-            /* Smooth hover effect */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            /* Added box-shadow transition */
             border-radius: 8px;
-            /* Thode aur rounded corners for bigger size */
             margin: 5px 10px;
-            /* Thoda upar-neeche margin bhi add kiya for spacing */
             display: inline-block;
-            /* Important for margin to work correctly with wrap */
-
-            /* ... baaki styles ... */
             font-family: 'Arial', sans-serif;
             background-color: #ddd;
-            /* Light gray */
             color: #333;
-            /* Default text color changed back from hover color */
             border-bottom: none;
-            /* Default border-bottom removed */
+            cursor: pointer;
+            /* Make the cursor a pointer on hover */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow by default */
         }
 
         .category-link:hover {
             background-color: #007bff;
-            /* Blue background on hover */
             color: white;
-            /* White text on hover */
             border-bottom: none;
-            /* Hover par bhi border-bottom nahi */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            /* Thodi badi shadow on hover */
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+            /* Increase shadow on hover */
+        }
+
+        .books-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5em;
+            margin: 2em;
+            justify-content: center;
+        }
+
+        .book-card {
+            width: 250px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.2s ease;
+            margin-bottom: 2em;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .book-card:hover {
+            transform: scale(1.03);
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .book-card .book-details {
+            padding: 1em;
+        }
+
+        .book-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 0.5em;
+        }
+
+        .book-price {
+            color: #28a745;
+            font-size: 1em;
+            margin-bottom: 0.5em;
+        }
+
+        .book-card .actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5em;
+            border-top: 1px solid #eee;
+        }
+
+        .book-card .actions button {
+            padding: 0.7em 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+            background-color: transparent;
+            /* Make background transparent for icons */
+            color: inherit;
+            /* Inherit text color */
+        }
+
+        .book-card .buy-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .book-card .buy-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .book-card .add-cart-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .book-card .add-cart-btn:hover {
+            background-color: #1e7e34;
+        }
+
+        .book-card .wishlist-btn:hover img {
+            content: url('wishlist_hover.png');
         }
     </style>
 </head>
@@ -70,29 +144,53 @@
         <span class="menu-icon" onclick="openDrawer()">&#9776;</span>
         <h1>SWOTTER - Buy & Sell Books</h1>
         <div class="icons">
-            <a href="wishlist.html"><i class="fas fa-heart"></i><span class="count" id="wishlist-count">0</span></a>
-            <a href="cart.html"><i class="fas fa-shopping-cart"></i><span class="count" id="cart-count">0</span></a>
+            <a href="wishlist.html">
+                <img src="heart.png" alt="Wishlist Icon" style="width: 28px; height: 28px;">
+                <span class="count" id="wishlist-count">0</span>
+            </a>
+            <a href="cart.html">
+                <img src="cart.png" alt="Cart Icon" style="width: 28px; height: 28px;">
+                <span class="count" id="cart-count">0</span>
+            </a>
         </div>
     </header>
 
-    <div class="categories-container">
-        <a href="fiction.html" class="category-link">Fiction</a>
-        <a href="non-fiction.html" class="category-link">Non-Fiction</a>
-        <a href="comics.html" class="category-link">Comics & Graphic Novels</a>
-        <a href="textbooks.html" class="category-link">Textbooks</a>
-        <a href="mystery.html" class="category-link">Mystery & Thriller</a>
-        <a href="self-help.html" class="category-link">Self-Help</a>
-        <a href="fantasy.html" class="category-link">Fantasy</a>
-        <a href="science-fiction.html" class="category-link">Science Fiction</a>
-        <a href="romance.html" class="category-link">Romance</a>
-        <a href="biography.html" class="category-link">Biographies & Memoirs</a>
-        <a href="history.html" class="category-link">History</a>
-        <a href="poetry.html" class="category-link">Poetry</a>
-        <a href="business.html" class="category-link">Business & Economics</a>
-        <a href="health.html" class="category-link">Health & Wellness</a>
-        <a href="children.html" class="category-link">Children's Books</a>
-        <a href="young-adult.html" class="category-link">Young Adult</a>
+    <div id="drawer" class="drawer">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeDrawer()">&times;</a>
+        <a href="index.html">Home</a>
+        <a href="account.html">My Account</a>
+        <a href="categories.html">Categories</a>
+        <a href="wishlist.html">Wishlist</a>
+        <a href="cart.html">Cart</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Help</a>
     </div>
+
+    <div class="categories-container" id="categoriesContainer">
+        <a href="#" class="category-link" data-category="Fiction">Fiction</a>
+        <a href="#" class="category-link" data-category="Non-Fiction">Non-Fiction</a>
+        <a href="#" class="category-link" data-category="Comics & Graphic Novels">Comics & Graphic Novels</a>
+        <a href="#" class="category-link" data-category="Textbooks">Textbooks</a>
+        <a href="#" class="category-link" data-category="Mystery & Thriller">Mystery & Thriller</a>
+        <a href="#" class="category-link" data-category="self-help">Self-Help</a>
+        <a href="#" class="category-link" data-category="Fantasy">Fantasy</a>
+        <a href="#" class="category-link" data-category="Science Fiction">Science Fiction</a>
+        <a href="#" class="category-link" data-category="romance">Romance</a>
+        <a href="#" class="category-link" data-category="Biographies & Memoirs">Biographies & Memoirs</a>
+        <a href="#" class="category-link" data-category="History">History</a>
+        <a href="#" class="category-link" data-category="Poetry">Poetry</a>
+        <a href="#" class="category-link" data-category="Business & Economics">Business & Economics</a>
+        <a href="#" class="category-link" data-category="Health & Wellness">Health & Wellness</a>
+        <a href="#" class="category-link" data-category="Children's Books">Children's Books</a>
+        <a href="#" class="category-link" data-category="Young Adult">Young Adult</a>
+    </div>
+
+    <h2 style="text-align:center; margin-top: 2em;">Available Books</h2>
+    <div id="booksContainer" class="books-container"></div>
+
+    <footer>
+        <p>&copy; 2025 SWOTTER. All Rights Reserved.</p>
+    </footer>
 
     <script>
         function openDrawer() {
@@ -100,6 +198,182 @@
         }
         function closeDrawer() {
             document.getElementById("drawer").style.left = "-250px";
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            updateCartCount();
+            updateWishlistCount();
+            loadBooks(); // Initial load of all books
+
+            document.getElementById('categoriesContainer').addEventListener('click', function (event) {
+                if (event.target.classList.contains('category-link')) {
+                    event.preventDefault(); // Prevent default link behavior
+                    const category = event.target.getAttribute('data-category');
+                    loadBooks(category); // Call loadBooks with the category
+                }
+            });
+
+            function updateCartCount() {
+                const cartCountElement = document.getElementById('cart-count');
+                if (cartCountElement) {
+                    cartCountElement.textContent = cart.length;
+                }
+            }
+
+            function updateWishlistCount() {
+                const wishlistCountElement = document.getElementById('wishlist-count');
+                if (wishlistCountElement) {
+                    wishlistCountElement.textContent = wishlist.length;
+                }
+            }
+
+            function addToCart(title, price, img) {
+                cart.push({ title, price, img });
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+            }
+
+            function addToWishlist(title, price, img) {
+                const existingIndex = wishlist.findIndex(item => item.title === title);
+                if (existingIndex === -1) {
+                    wishlist.push({ title: title, price: price, img: img });
+                } else {
+                    wishlist.splice(existingIndex, 1); // Remove if already wishlisted
+                }
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                updateWishlistCount();
+                loadBooks(document.currentCategory); // Re-render with the current category
+            }
+
+            function loadBooks(category = null) {
+                document.currentCategory = category; // Store the current category
+                let url = 'http://localhost:5000/api/books';
+                if (category) {
+                    url += `?category=${encodeURIComponent(category)}`;
+                }
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        const container = document.getElementById('booksContainer');
+                        container.innerHTML = ''; // Clear previous books
+
+                        if (data.length === 0 && category) {
+                            container.innerHTML = '<p>No books found in this category.</p>';
+                            return;
+                        }
+
+                        data.forEach(book => {
+                            const card = document.createElement('div');
+                            card.className = 'book-card';
+                            const isWishlisted = wishlist.some(item => item.title === book.title);
+                            const initialWishlistIcon = isWishlisted ? 'heart.png' : 'wishlist.png';
+
+                            const image = book.image
+                                ? `<img src="${book.image}" alt="${book.title}">`
+                                : `<img src="https://via.placeholder.com/250x200.png?text=No+Image" alt="No Image">`;
+
+                            card.innerHTML = `
+                                ${image}
+                                <div class="book-details">
+                                    <div class="book-title">${book.title}</div>
+                                    <div class="book-price">₹${book.price}</div>
+                                </div>
+                                <div class="actions">
+                                    <button class="buy-btn" onclick="window.location.href='checkout.html?title=${encodeURIComponent(book.title)}&price=${book.price}&img=${encodeURIComponent(book.image || 'https://via.placeholder.com/150x100.png?text=No+Image')}'">Buy</button>
+                                    <button class="add-cart-btn" data-title="${book.title}" data-price="${book.price}" data-img="${book.image || 'https://via.placeholder.com/100x100.png?text=No+Image'}">Add to Cart</button>
+                                    <button class="wishlist-btn" data-title="${book.title}" data-price="${book.price}" data-img="${book.image || 'https://via.placeholder.com/100x100.png?text=No+Image'}">
+                                        <img src="${initialWishlistIcon}" alt="Wishlist Icon" style="width: 24px; height: 24px; vertical-align: middle;">
+                                    </button>
+                                </div>
+                            `;
+                            container.appendChild(card);
+                        });
+
+                        attachEventListenersToBooks();
+                    })
+                    .catch(error => {
+                        console.error('Failed to load books:', error);
+                    });
+            }
+
+            function attachEventListenersToBooks() {
+                document.querySelectorAll('.add-cart-btn').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const title = this.getAttribute('data-title');
+                        const price = parseFloat(this.getAttribute('data-price'));
+                        const img = this.getAttribute('data-img');
+                        addToCart(title, price, img);
+                    });
+                });
+
+                document.querySelectorAll('.wishlist-btn').forEach(button => {
+                    const imgElement = button.querySelector('img');
+                    const hoverSrc = 'wishlist_hover.png';
+                    const likedSrc = 'heart.png';
+                    const defaultSrc = 'wishlist.png';
+                    const title = button.getAttribute('data-title');
+                    const price = parseFloat(button.getAttribute('data-price'));
+                    const img = button.getAttribute('data-img');
+
+                    const isInitiallyWishlisted = wishlist.some(item => item.title === title);
+                    if (isInitiallyWishlisted) {
+                        imgElement.src = likedSrc;
+                    }
+
+                    button.addEventListener('mouseover', function () {
+                        if (imgElement.src !== likedSrc) {
+                            imgElement.src = hoverSrc;
+                        }
+                    });
+
+                    button.addEventListener('mouseout', function () {
+                        if (imgElement.src !== likedSrc) {
+                            imgElement.src = defaultSrc;
+                        }
+                    });
+
+                    button.addEventListener('click', function () {
+                        const isCurrentlyWishlisted = wishlist.some(item => item.title === title);
+                        if (isCurrentlyWishlisted) {
+                            const indexToRemove = wishlist.findIndex(item => item.title === title);
+                            if (indexToRemove > -1) {
+                                wishlist.splice(indexToRemove, 1);
+                                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                                updateWishlistCount();
+                                imgElement.src = defaultSrc;
+                            }
+                        } else {
+                            addToWishlist(title, price, img);
+                            imgElement.src = likedSrc;
+                        }
+                    });
+                });
+            }
+        });
+
+        function deleteBook(bookId) {
+            if (confirm("Are you sure you want to delete this book?")) {
+                fetch(`/api/books/${bookId}`, {
+                    method: 'DELETE'
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        alert(data.message || "Book deleted");
+                        location.reload(); // Refresh the page
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("Failed to delete book.");
+                    });
+            }
+        }
+
+        function openCategoryPage(category) {
+            // You can implement navigation to a dedicated category page here if needed
+            console.log(`Category clicked: ${category}`);
         }
     </script>
 </body>

@@ -1,43 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - SWOTTER</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f8f9fa;
             color: #333;
         }
 
         h1 {
             text-align: center;
-            padding: 20px 0;
-            background-color: #007bff;
+            padding: 30px 0;
+            background-color: #205781;
+            /* Primary SWOTTER color (example) */
             color: white;
             margin: 0;
+            font-weight: 500;
         }
 
         .container {
             display: flex;
-            width: 80%;
-            margin: 20px auto;
+            width: 85%;
+            margin: 30px auto;
             background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
             overflow: hidden;
+            border: 1px solid #e0e0e0;
         }
 
-        .left-section, .right-section {
-            padding: 20px;
+        .left-section,
+        .right-section {
+            padding: 30px;
         }
 
         .left-section {
             flex: 2;
-            border-right: 1px solid #ddd;
+            border-right: 1px solid #e0e0e0;
         }
 
         .right-section {
@@ -45,25 +50,78 @@
             background-color: #f9f9f9;
         }
 
-        .address-box, .payment-box, .delivery-box, .order-summary, .order-details {
-            margin-bottom: 20px;
-            border: 1px solid #eee;
-            padding: 15px;
-            border-radius: 5px;
+        .address-box,
+        .payment-box,
+        .delivery-box {
+            margin-bottom: 25px;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
             background-color: white;
         }
 
         .section-title {
-            color: #007bff;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+            color: #205781;
+            /* Primary SWOTTER color */
+            border-bottom: 2px solid #205781;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .address-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .address-form input[type="text"],
+        .address-form input[type="tel"],
+        .address-form select {
+            width: calc(100% - 16px);
+            padding: 10px;
             margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        .address-actions button {
+            background-color: #007bff;
+            /* Accent color */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-right: 10px;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .address-actions button:hover {
+            background-color: #0056b3;
+        }
+
+        .address-display {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .address-display strong {
+            font-weight: bold;
+            color: #333;
         }
 
         .change-link {
             color: #007bff;
+            /* Accent color */
             text-decoration: none;
             margin-right: 10px;
+            font-size: 0.95em;
         }
 
         .change-link:hover {
@@ -72,53 +130,172 @@
 
         .place-order-button {
             background-color: #28a745;
+            /* Success color */
             color: white;
-            padding: 15px 20px;
+            padding: 18px 25px;
             border: none;
-            border-radius: 5px;
-            font-size: 1em;
+            border-radius: 8px;
+            font-size: 1.1em;
             cursor: pointer;
             width: 100%;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            /* To remove default link styling */
+            display: inline-block;
+            /* To allow width to be set */
+            text-align: center;
         }
 
         .place-order-button:hover {
             background-color: #218838;
         }
 
+        .order-summary {
+            margin-bottom: 30px;
+        }
+
+        .order-summary p {
+            font-size: 0.9em;
+            margin-top: 15px;
+            color: #777;
+            text-align: center;
+        }
+
+        .order-summary a {
+            color: #007bff;
+            /* Accent color */
+            text-decoration: none;
+        }
+
+        .order-summary a:hover {
+            text-decoration: underline;
+        }
+
         .order-details p {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            color: #555;
+            font-size: 1em;
         }
 
         .order-details strong {
             font-size: 1.1em;
+            color: #333;
         }
 
-        #cart-items-display img {
-            border-radius: 5px;
+        #cart-items-display {
+            margin-top: 10px;
+        }
+
+        #cart-items-display .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        #cart-items-display .cart-item img {
+            width: 70px;
+            height: 70px;
+            margin-right: 15px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        #cart-items-display .cart-item div {
+            flex-grow: 1;
+        }
+
+        #cart-items-display .cart-item p {
+            margin-bottom: 5px;
+            font-size: 0.95em;
+            color: #444;
+        }
+
+        #cart-items-display .cart-item p strong {
+            font-weight: 600;
+        }
+
+        .payment-options {
+            margin-top: 15px;
+        }
+
+        .payment-options label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .payment-options input[type="radio"] {
+            margin-right: 8px;
         }
     </style>
 </head>
+
 <body>
-    <h1>Secure checkout</h1>
+    <h1>Secure Checkout</h1>
     <div class="container">
         <div class="left-section">
             <div class="address-box">
-                <h2 class="section-title">Delivering to [User Name]</h2>
-                <p>[Address Line 1]</p>
-                <p>[Address Line 2]</p>
-                <p>[City], [State], [Zip Code]</p>
-                <p>[Country]</p>
-                <a href="#" class="change-link">Change</a>
-                <p><a href="#">Add delivery instructions</a></p>
+                <h2 class="section-title">Delivery Address</h2>
+                <div id="address-display" style="display: none;">
+                    <p><strong id="delivery-name"></strong></p>
+                    <p id="delivery-address-line1"></p>
+                    <p id="delivery-address-line2"></p>
+                    <p><span id="delivery-city"></span>, <span id="delivery-state"></span> <span
+                            id="delivery-zip"></span></p>
+                    <p id="delivery-country"></p>
+                    <p><a href="#" class="change-link" onclick="showAddressForm()">Change</a></p>
+                    <hr>
+                </div>
+                <form id="address-form" class="address-form">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" name="fullName" required>
+
+                    <label for="addressLine1">Address Line 1:</label>
+                    <input type="text" id="addressLine1" name="addressLine1" required>
+
+                    <label for="addressLine2">Address Line 2 (Optional):</label>
+                    <input type="text" id="addressLine2" name="addressLine2">
+
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" required>
+
+                    <label for="state">State/Province:</label>
+                    <input type="text" id="state" name="state" required>
+
+                    <label for="zipCode">Zip/Postal Code:</label>
+                    <input type="text" id="zipCode" name="zipCode" required>
+
+                    <label for="country">Country:</label>
+                    <input type="text" id="country" name="country" required>
+
+                    <label for="phone">Phone Number (Optional):</label>
+                    <input type="tel" id="phone" name="phone">
+
+                    <div class="address-actions">
+                        <button type="button" onclick="saveAddress()">Save Address</button>
+                        <button type="button" onclick="hideAddressForm()">Cancel</button>
+                    </div>
+                </form>
             </div>
 
             <div class="payment-box">
-                <h2 class="section-title">Pay on delivery (Cash/Card)</h2>
-                <p>Use a gift card, voucher or promo code</p>
-                <a href="#" class="change-link">Change</a>
+                <h2 class="section-title">Payment Method</h2>
+                <div class="payment-options">
+                    <label>
+                        <input type="radio" name="paymentMethod" value="cashOnDelivery" checked>
+                        Pay on delivery (Cash/Card)
+                    </label>
+                    <label>
+                        <input type="radio" name="paymentMethod" value="upi">
+                        UPI
+                    </label>
+                </div>
             </div>
 
             <div class="delivery-box">
@@ -130,27 +307,49 @@
 
         <div class="right-section">
             <div class="order-summary">
-                <button class="place-order-button">Place your order</button>
-                <p style="font-size: 0.8em; margin-top: 10px;">By placing your order, you agree to our <a href="#">privacy notice</a> and <a href="#">conditions of use</a>.</p>
+                <a href="index.html" class="place-order-button" onclick="placeOrder()"
+                    style="color: white; text-decoration: none;">Place your order</a>
+                <p style="font-size: 0.9em; margin-top: 15px;">By placing your order, you agree to our <a
+                        href="#">privacy notice</a> and <a href="#">conditions of use</a>.</p>
             </div>
 
             <div class="order-details">
-                <p><span>Items:</span><span id="items-total">$0.00</span></p>
-                <p><span>Delivery:</span><span>$0.00</span></p>
-                <p><span>Cash/Pay on Delivery fee:</span><span>$10.00</span></p>
-                <p><strong><span>Order Total:</span><span id="order-total">$0.00</span></strong></p>
+                <p><span>Items:</span><span id="items-total">₹0.00</span></p>
+                <p><span>Delivery:</span><span id="delivery-cost">₹0.00</span></p>
+                <p><span>Cash/Pay on Delivery fee:</span><span>₹10.00</span></p>
+                <p><strong><span>Order Total:</span><span id="order-total">₹0.00</span></strong></p>
             </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const cartData = JSON.parse(sessionStorage.getItem('cartData')) || [];
-            const cartTotal = sessionStorage.getItem('cartTotal') || "0.00";
+        document.addEventListener('DOMContentLoaded', function () {
+            loadCartItems();
+            updateTotal();
+            showAddressForm(); // Show address form initially
+        });
 
-            const cartItemsDisplay = document.getElementById('cart-items-display');
+        let cartData = JSON.parse(sessionStorage.getItem('cartData')) || [];
+        let cartTotal = parseFloat(sessionStorage.getItem('cartTotal')) || 0;
+        let deliveryAddress = JSON.parse(sessionStorage.getItem('deliveryAddress')) || null;
+
+        const cartItemsDisplay = document.getElementById('cart-items-display');
+        const itemsTotalElement = document.getElementById('items-total');
+        const orderTotalElement = document.getElementById('order-total');
+        const deliveryCostElement = document.getElementById('delivery-cost');
+
+        const addressForm = document.getElementById('address-form');
+        const addressDisplay = document.getElementById('address-display');
+        const deliveryNameElement = document.getElementById('delivery-name');
+        const deliveryAddressLine1Element = document.getElementById('delivery-address-line1');
+        const deliveryAddressLine2Element = document.getElementById('delivery-address-line2');
+        const deliveryCityElement = document.getElementById('delivery-city');
+        const deliveryStateElement = document.getElementById('delivery-state');
+        const deliveryZipElement = document.getElementById('delivery-zip');
+        const deliveryCountryElement = document.getElementById('delivery-country');
+
+        function loadCartItems() {
             let itemsHTML = '';
-
             const groupedCart = cartData.reduce((acc, item) => {
                 const existingItem = acc.find(i => i.title === item.title);
                 if (existingItem) {
@@ -163,21 +362,102 @@
 
             groupedCart.forEach(item => {
                 itemsHTML += `
-                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                        <img src="${item.img}" alt="${item.title}" style="width: 60px; height: 60px; margin-right: 10px;">
+                    <div class="cart-item">
+                        <img src="${item.img}" alt="${item.title}">
                         <div>
-                            <p>${item.title}</p>
-                            <p>Price: $${item.price}</p>
+                            <p><strong>${item.title}</strong></p>
+                            <p>Price: ₹${item.price}</p>
                             <p>Quantity: ${item.count}</p>
                         </div>
                     </div>
                 `;
             });
             cartItemsDisplay.innerHTML = itemsHTML;
+        }
 
-            document.getElementById('items-total').textContent = `$${cartTotal}`;
-            document.getElementById('order-total').textContent = `$${(parseFloat(cartTotal) + 10).toFixed(2)}`;
-        });
+        function updateTotal() {
+            itemsTotalElement.textContent = `₹${cartTotal.toFixed(2)}`;
+            const deliveryFee = 0; // You can make this dynamic based on address later
+            deliveryCostElement.textContent = `₹${deliveryFee.toFixed(2)}`;
+            orderTotalElement.textContent = `₹${(cartTotal + deliveryFee + 10).toFixed(2)}`; // Added pay on delivery fee
+        }
+
+        function showAddressForm() {
+            addressForm.style.display = 'block';
+            addressDisplay.style.display = 'none';
+            if (deliveryAddress) {
+                document.getElementById('fullName').value = deliveryAddress.fullName || '';
+                document.getElementById('addressLine1').value = deliveryAddress.addressLine1 || '';
+                document.getElementById('addressLine2').value = deliveryAddress.addressLine2 || '';
+                document.getElementById('city').value = deliveryAddress.city || '';
+                document.getElementById('state').value = deliveryAddress.state || '';
+                document.getElementById('zipCode').value = deliveryAddress.zipCode || '';
+                document.getElementById('country').value = deliveryAddress.country || '';
+                document.getElementById('phone').value = deliveryAddress.phone || '';
+            }
+        }
+
+        function hideAddressForm() {
+            addressForm.style.display = 'none';
+            if (deliveryAddress) {
+                addressDisplay.style.display = 'block';
+            } else {
+                showAddressForm(); // Keep showing if no address saved
+            }
+        }
+
+        function saveAddress() {
+            deliveryAddress = {
+                fullName: document.getElementById('fullName').value,
+                addressLine1: document.getElementById('addressLine1').value,
+                addressLine2: document.getElementById('addressLine2').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                zipCode: document.getElementById('zipCode').value,
+                country: document.getElementById('country').value,
+                phone: document.getElementById('phone').value
+            };
+            sessionStorage.setItem('deliveryAddress', JSON.stringify(deliveryAddress));
+            updateAddressDisplay();
+            hideAddressForm();
+        }
+
+        function updateAddressDisplay() {
+            if (deliveryAddress) {
+                deliveryNameElement.textContent = deliveryAddress.fullName;
+                deliveryAddressLine1Element.textContent = deliveryAddress.addressLine1;
+                deliveryAddressLine2Element.textContent = deliveryAddress.addressLine2 || '';
+                deliveryCityElement.textContent = deliveryAddress.city;
+                deliveryStateElement.textContent = deliveryAddress.state;
+                deliveryZipElement.textContent = deliveryAddress.zipCode;
+                deliveryCountryElement.textContent = deliveryAddress.country;
+                addressDisplay.style.display = 'block';
+            } else {
+                addressDisplay.style.display = 'none';
+            }
+        }
+
+        function placeOrder() {
+            if (!deliveryAddress) {
+                alert('Please enter your delivery address.');
+                return;
+            }
+
+            const orderData = {
+                items: cartData,
+                total: parseFloat(orderTotalElement.textContent.replace('₹', '')),
+                deliveryAddress: deliveryAddress,
+                paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value
+            };
+
+            console.log('Order Data:', orderData);
+
+            // In a real application, you would send this orderData to your server
+            // using a fetch request to process the order.
+            alert(`Order placed with payment method: ${orderData.paymentMethod}! (Implementation to send data to server is pending)`);
+            window.location.href = 'index.html';
+        }
     </script>
 </body>
+
 </html>

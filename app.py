@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sqlite3
 import base64
-
+import json
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -109,6 +110,43 @@ def get_books():
     conn.close()
     return jsonify(books)
 
+CONTACT_DATA_FILE = 'contact_messages.json'
+
+def load_contact_data():
+    try:
+        with open(CONTACT_DATA_FILE, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError:
+        return []
+
+def save_contact_data(data):
+    with open(CONTACT_DATA_FILE, 'w') as f:
+        json.dump(data, f, indent=4)
+
+@app.route('/api/contact', methods=['POST'])
+def receive_contact_form():
+    if 'name' not in request.form or 'email' not in request.form or 'message' not in request.form:
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    name = request.form['name']
+    email = request.form['email']
+    message = request.form['message']
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    new_message = {
+        'timestamp': timestamp,
+        'name': name,
+        'email': email,
+        'message': message
+    }
+
+    contact_data = load_contact_data()
+    contact_data.append(new_message)
+    save_contact_data(contact_data)
+
+    return jsonify({'message': 'Message received successfully!'}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
